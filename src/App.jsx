@@ -524,22 +524,26 @@ export default function App() {
   };
   const updateParam = (key, value) => setParams(p => ({ ...p, [key]: value }));
 
-  const chartData = scenario.series.slice(0, animationProgress + 1).map((d, i) => ({
-    year: d.year,
-    gdpAI: d.gdpIdx, gdpBase: baseline.series[i].gdpIdx,
-    labourAI: d.labourShare, labourBase: baseline.series[i].labourShare,
-    giniAI: d.giniPct, giniBase: baseline.series[i].giniPct,
-    wageAI: d.medianWage, wageBase: baseline.series[i].medianWage,
-    stabilityAI: d.stabilityPct, stabilityBase: baseline.series[i].stabilityPct,
-    juniorUnempAI: d.juniorUnemp, juniorUnempBase: baseline.series[i].juniorUnemp,
-    midUnempAI: d.midUnemp, midUnempBase: baseline.series[i].midUnemp,
-    seniorUnempAI: d.seniorUnemp, seniorUnempBase: baseline.series[i].seniorUnemp,
-    juniorWageAI: d.juniorWage, juniorWageBase: baseline.series[i].juniorWage,
-    midWageAI: d.midWage, midWageBase: baseline.series[i].midWage,
-    seniorWageAI: d.seniorWage, seniorWageBase: baseline.series[i].seniorWage,
-    seniorJuniorAI: d.seniorJuniorRatio, seniorJuniorBase: baseline.series[i].seniorJuniorRatio,
-    adoptionAI: d.adoption, maxDiffusionAI: d.maxDiffusion,
-  }));
+  const chartData = scenario.series.map((d, i) => {
+    const v = i <= animationProgress;
+    const b = baseline.series[i];
+    return {
+      year: d.year,
+      gdpAI: v ? d.gdpIdx : undefined, gdpBase: v ? b.gdpIdx : undefined,
+      labourAI: v ? d.labourShare : undefined, labourBase: v ? b.labourShare : undefined,
+      giniAI: v ? d.giniPct : undefined, giniBase: v ? b.giniPct : undefined,
+      wageAI: v ? d.medianWage : undefined, wageBase: v ? b.medianWage : undefined,
+      stabilityAI: v ? d.stabilityPct : undefined, stabilityBase: v ? b.stabilityPct : undefined,
+      juniorUnempAI: v ? d.juniorUnemp : undefined, juniorUnempBase: v ? b.juniorUnemp : undefined,
+      midUnempAI: v ? d.midUnemp : undefined, midUnempBase: v ? b.midUnemp : undefined,
+      seniorUnempAI: v ? d.seniorUnemp : undefined, seniorUnempBase: v ? b.seniorUnemp : undefined,
+      juniorWageAI: v ? d.juniorWage : undefined, juniorWageBase: v ? b.juniorWage : undefined,
+      midWageAI: v ? d.midWage : undefined, midWageBase: v ? b.midWage : undefined,
+      seniorWageAI: v ? d.seniorWage : undefined, seniorWageBase: v ? b.seniorWage : undefined,
+      seniorJuniorAI: v ? d.seniorJuniorRatio : undefined, seniorJuniorBase: v ? b.seniorJuniorRatio : undefined,
+      adoptionAI: v ? d.adoption : undefined, maxDiffusionAI: v ? d.maxDiffusion : undefined,
+    };
+  });
 
   return (
     <div style={{
